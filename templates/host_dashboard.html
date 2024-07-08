@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Host Dashboard</title>
+    <style>
+        /* Your CSS styles */
+        .topnav {
+            background-color: #333;
+            overflow: hidden;
+        }
+        .topnav a {
+            float: left;
+            color: #f2f2f2;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            font-size: 17px;
+            margin-left: 10px;
+        }
+        .topnav a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <div class="topnav">
+        <!-- Navigation links -->
+    </div>
+
+    <h1>Host Dashboard</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Guest Name</th>
+                <th>Check-In Date</th>
+                <th>Check-Out Date</th>
+                <th>Status</th>
+                <th>Update Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for booking in bookings %}
+            <tr>
+                <td>{{ booking.guest_name }}</td>
+                <td>{{ booking.check_in_date }}</td>
+                <td>{{ booking.check_out_date }}</td>
+                <td>{{ booking.status }}</td>
+                <td>
+                  <form action="{{ url_for('update_booking_status', booking_id=booking.booking_id) }}" method="post">
+                    <select name="status">
+                        <option value="in progress" {% if booking.status == 'in progress' %}selected{% endif %}>In Progress</option>
+                        <option value="approved" {% if booking.status == 'approved' %}selected{% endif %}>Approved</option>
+                        <option value="completed" {% if booking.status == 'completed' %}selected{% endif %}>Completed</option>
+                        <option value="cancelled" {% if booking.status == 'cancelled' %}selected{% endif %}>Cancelled</option>
+                    </select>
+                    <button type="submit">Update</button>
+                </form>
+
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
